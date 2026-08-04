@@ -1,0 +1,78 @@
+release_scope: runnable_example_not_manuscript_configuration
+
+logging:
+  log_dir: results/example/log
+  log_level: INFO
+  log_interval: 10
+
+data:
+  data_dir: processed_data_example
+  feature_backbone: uni2-h
+  train_samples: AUTO_EXCEPT_VAL_TEST
+  test_samples:
+    - TEST_SAMPLE
+  batch_size: 64
+  spatial_pack_size: 1
+  val_batch_size: 512
+  num_workers: 4
+  k_neighbors: 10
+  spatial_batching: true
+  lazy_load: true
+  gene_module_dir: processed_data_example/gene_modules_k10
+
+model:
+  version: trace
+  fdt:
+    input_dim: 1536
+    hidden_dim: 256
+    output_dim: 256
+    num_frequencies: 32
+    num_graph_layers: 1
+    dropout: 0.1
+    aggregator_type: gat
+    num_heads: 4
+    hf_lambda: 0.1
+    hf_use_local_feat: false
+    hf_residual_type: local_bandpass
+    hf_residual_scale: 1.0
+    hf_alpha_temperature: 1.0
+    hf_gamma_max: 0.1
+    hf_gamma_init: 0.05
+    hf_num_frequency_orders: 2
+  mpn:
+    hidden_dim: 128
+    dropout: 0.1
+  decoder:
+    hidden_dim: 256
+    output_dim: 200
+    num_modules: 10
+    dropout: 0.1
+    prior_alpha: 1.0
+  scale_head:
+    hidden_dim: 128
+    dropout: 0.1
+    input_source: z_final
+
+training:
+  learning_rate: 1.0e-4
+  num_epochs: 10
+  seed: 42
+  grad_accum_steps: 1
+  gradient_clip: 1.0
+  mixed_precision: true
+  amp_dtype: bf16
+  lambda_coarse: 0.05
+  lambda_scale: 0.1
+  lambda_log_mse: 0.0
+  lambda_gene_pcc: 0.0
+  lambda_hf: 0.0
+  lambda_grad: 0.0
+  checkpoint:
+    save_dir: results/example/checkpoints
+    save_last: true
+    save_every_n_epochs: 10
+
+performance:
+  cudnn_benchmark: true
+  tf32: true
+  matmul_precision: high
