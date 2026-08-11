@@ -8,7 +8,7 @@ A central component of TRACE is the **Frequency-Decoupled Topology-aware Trunk (
 
 Using precomputed histology features, TRACE performs inference with a single deterministic forward pass, without test-time spatial transcriptomics data, reference-sample retrieval, or iterative sampling.
 
-![TRACE framework](Fig1_TRACE_overview.png)
+![TRACE framework](view.png)
 
 ## System environment
 
